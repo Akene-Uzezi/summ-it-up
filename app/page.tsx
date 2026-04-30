@@ -3,6 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { SendHorizontal } from "lucide-react";
 import { useState } from "react";
+import { motion } from "motion/react";
 
 export default function Home() {
   const [inputValue, setInputValue] = useState("");
@@ -18,22 +19,37 @@ export default function Home() {
       </div>
 
       {/* The Input Card */}
-      <Card className="w-full max-w-2xl border-border bg-card shadow-2xl">
-        <CardContent className="p-4 flex flex-col gap-3">
-          <Textarea
-            placeholder="Paste your link..."
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            autoResize
-            minRows={1}
-            maxRows={6}
-            className="text-white py-2 bg-transparent border-none focus-visible:ring-0 text-base"
-          />
-          <div className="flex justify-end">
-            <SendHorizontal className="cursor-pointer w-5 h-5 text-white" />
-          </div>
-        </CardContent>
-      </Card>
+      <motion.div
+        layout
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{
+          layout: {
+            duration: 0.3,
+            type: "spring",
+            stiffness: 200,
+            damping: 25,
+          },
+        }}
+        className="w-full max-w-2xl"
+      >
+        <Card className="border-border bg-card shadow-2xl overflow-hidden">
+          <CardContent className="p-4 flex flex-col gap-3">
+            <Textarea
+              placeholder="Paste your link..."
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              autoResize
+              minRows={1}
+              maxRows={6}
+              className="text-white py-2 bg-transparent border-none focus-visible:ring-0 text-base"
+            />
+            <div className="flex justify-end">
+              <SendHorizontal className="cursor-pointer w-5 h-5 text-white" />
+            </div>
+          </CardContent>
+        </Card>
+      </motion.div>
     </main>
   );
 }
