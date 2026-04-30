@@ -1,9 +1,10 @@
 "use client";
 import { Card, CardContent } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
-import { SendHorizontal } from "lucide-react";
+import { SendHorizontal, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { motion } from "motion/react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function Home() {
   const [inputValue, setInputValue] = useState("");
@@ -20,6 +21,15 @@ export default function Home() {
             Paste a URL or text below to get started.
           </p>
         </div>
+      )}
+      {loading && (
+        <Card className="w-full max-w-2xl border-border bg-card shadow-2xl overflow-hidden mb-4">
+          <CardContent className="p-4 flex flex-col gap-3">
+            <Skeleton className="h-4 w-3/4" />
+            <Skeleton className="h-4 w-full" />
+            <Skeleton className="h-4 w-full" />
+          </CardContent>
+        </Card>
       )}
 
       {/* The Input Card */}
@@ -49,7 +59,11 @@ export default function Home() {
               className="text-white py-2 bg-transparent border-none focus-visible:ring-0 text-base"
             />
             <div className="flex justify-end">
-              <SendHorizontal className="cursor-pointer w-5 h-5 text-white" />
+              {loading ? (
+                <Loader2 className="animate-spin w-5 h-5 text-white" />
+              ) : (
+                <SendHorizontal className="cursor-pointer w-5 h-5 text-white" />
+              )}
             </div>
           </CardContent>
         </Card>
