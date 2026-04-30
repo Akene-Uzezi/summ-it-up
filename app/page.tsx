@@ -28,7 +28,9 @@ export default function Home() {
       );
       if (!response.ok) {
         const errorData = await response.json();
-        setError(errorData.message || "An error occurred while summarizing.");
+        setTimeout(() => {
+          setError(errorData.message || "An error occurred while summarizing.");
+        }, 3000);
       }
       const data = await response.json();
       setSummary(data.summary);
@@ -51,7 +53,7 @@ export default function Home() {
           </p>
         </div>
       )}
-      {error && (
+      {error && !loading && (
         <Card className="w-full max-w-2xl border-border bg-card shadow-2xl overflow-hidden mb-4">
           <CardContent className="p-4">
             <p className="text-red-500">{error}</p>
@@ -61,6 +63,9 @@ export default function Home() {
       {loading && (
         <Card className="w-full max-w-2xl border-border bg-card shadow-2xl overflow-hidden mb-4">
           <CardContent className="p-4 flex flex-col gap-3">
+            <h2 className="animate-pulse text-lg font-semibold text-white mb-2">
+              Summarizing...
+            </h2>
             <Skeleton className="h-4 w-3/4" />
             <Skeleton className="h-4 w-full" />
             <Skeleton className="h-4 w-full" />
