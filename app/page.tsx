@@ -129,9 +129,10 @@ export default function Home() {
                 href={url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="ml-2 cursor-pointer p-2 rounded-md bg-transparent hover:bg-zinc-900 transition-colors"
+                className="flex items-center text-white gap-1 ml-2 cursor-pointer p-2 rounded-md bg-transparent hover:bg-zinc-900 transition-colors"
               >
                 <ExternalLink className="w-5 h-5 text-white" />
+                Read Original
               </a>
             )}
           </div>
