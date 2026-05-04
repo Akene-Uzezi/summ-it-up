@@ -1,7 +1,13 @@
 "use client";
 import { Card, CardContent } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
-import { SendHorizontal, Loader2 } from "lucide-react";
+import {
+  SendHorizontal,
+  Loader2,
+  Copy,
+  Check,
+  ExternalLink,
+} from "lucide-react";
 import { useState } from "react";
 import { motion } from "motion/react";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -10,10 +16,27 @@ export default function Home() {
   const [inputValue, setInputValue] = useState("");
   const [loading, setLoading] = useState(false);
   const [summary, setSummary] = useState(null);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
+  const [copied, setCopied] = useState<boolean>(false);
+  const [url, setUrl] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (inputValue.trim() === "") {
+      setError("Input cannot be empty.");
+      return;
+    }
+    const isValidurl = (url: string): Boolean => {
+      try {
+        const parsed = new URL(url);
+        if (parsed.protocol === "http:" || parsed.protocol === "https:") {
+          return true;
+        }
+      } catch {
+        return false;
+      }
+      return false;
+    };
     try {
       setLoading(true);
       const response = await fetch(
@@ -35,6 +58,11 @@ export default function Home() {
       const data = await response.json();
       setSummary(data.summary);
       setInputValue("");
+      if (isValidurl(inputValue)) {
+        setUrl(inputValue);
+      } else {
+        setUrl(null);
+      }
     } catch (err) {
       console.log(err);
     } finally {
@@ -78,6 +106,35 @@ export default function Home() {
             <h2 className="text-lg font-semibold text-white mb-2">Summary</h2>
             <p className="text-zinc-400 whitespace-pre-wrap">{summary}</p>
           </CardContent>
+          <div className="flex justify-end p-4">
+            <button
+              onClick={() => {
+                navigator.clipboard.writeText(summary);
+                setCopied(true);
+                setTimeout(() => setCopied(false), 2000);
+              }}
+              className="cursor-pointer p-2 rounded-md bg-transparent hover:bg-zinc-900 transition-colors"
+            >
+              {copied ? (
+                <div className="flex items-center gap-1">
+                  <Check className="w-5 h-5 text-green-600" />
+                  <p className="text-white">Copied</p>
+                </div>
+              ) : (
+                <Copy className="w-5 h-5 text-white" />
+              )}
+            </button>
+            {url && (
+              <a
+                href={url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="ml-2 cursor-pointer p-2 rounded-md bg-transparent hover:bg-zinc-900 transition-colors"
+              >
+                <ExternalLink className="w-5 h-5 text-white" />
+              </a>
+            )}
+          </div>
         </Card>
       )}
 
