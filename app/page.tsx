@@ -8,6 +8,7 @@ import {
   Check,
   ExternalLink,
   Mic,
+  AudioLines,
 } from "lucide-react";
 import { useState } from "react";
 import { motion } from "motion/react";
@@ -15,11 +16,12 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export default function Home() {
   const [inputValue, setInputValue] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const [summary, setSummary] = useState(null);
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState<boolean>(false);
   const [url, setUrl] = useState<string | null>(null);
+  const [recording, setRecording] = useState<boolean>(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -69,6 +71,31 @@ export default function Home() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleMic = () => {
+    const SpeechRecognition =
+      window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      setError("Speech Recognition is not supported in your browser.");
+      return;
+    }
+    const recognition = new SpeechRecognition();
+    recognition.lang = "en-US";
+    recognition.interimResults = false;
+
+    recognition.onstart = () => setRecording(true);
+    recognition.onend = () => setRecording(false);
+    recognition.onresult = (e: SpeechRecognitionEvent) => {
+      const transcript = e.results[0][0].transcript;
+      setInputValue((prev) => prev + transcript);
+    };
+    recognition.onerror = (e: SpeechRecognitionErrorEvent) => {
+      setRecording(false);
+      setError(`Speech Error: ${e.error}`);
+    };
+
+    recognition.start();
   };
 
   return (
@@ -172,12 +199,25 @@ export default function Home() {
                 {loading ? (
                   <Loader2 className="animate-spin w-5 h-5 text-white" />
                 ) : (
-                  <button
-                    type="submit"
-                    className="cursor-pointer p-2 rounded-md bg-transparent hover:bg-zinc-900 transition-colors"
-                  >
-                    <SendHorizontal className="w-5 h-5 text-white" />
-                  </button>
+                  <>
+                    <button
+                      type="button"
+                      onClick={handleMic}
+                      className="cursor-pointer p-2 rounded-md bg-transparent hover:bg-zinc-900 transition-colors"
+                    >
+                      {recording ? (
+                        <AudioLines className="text-red-500 animate-pulse" />
+                      ) : (
+                        <Mic className="text-white" />
+                      )}
+                    </button>
+                    <button
+                      type="submit"
+                      className="cursor-pointer p-2 rounded-md bg-transparent hover:bg-zinc-900 transition-colors"
+                    >
+                      <SendHorizontal className="w-5 h-5 text-white" />
+                    </button>
+                  </>
                 )}
               </div>
             </CardContent>
