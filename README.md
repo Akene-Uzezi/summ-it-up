@@ -1,12 +1,15 @@
 # Summ-It-Up
 
-A modern web application built with Next.js 16 that provides intelligent text summarization services. Users can paste text or URLs to generate concise summaries powered by a backend summarization API.
+A modern web application built with Next.js 16 that provides intelligent text summarization services with speech recognition capabilities. Users can paste text, submit URLs, or use speech input to generate concise summaries powered by a backend summarization API.
 
 ## Features
 
 - **Text Summarization**: Paste any text to generate a concise summary
-- **URL Processing**: Submit URLs to summarize web content
+- **URL Processing**: Submit URLs to summarize web content (auto-detected and linked in results)
+- **Speech Recognition**: Convert speech to text using browser's Speech Recognition API
 - **Real-time Feedback**: Animated loading states with skeleton placeholders
+- **Copy to Clipboard**: One-click copying of generated summaries
+- **Audio Visualization**: Visual feedback during speech recognition
 - **Modern UI**: Built with shadcn/ui components, Tailwind CSS, and Radix UI
 - **Responsive Design**: Mobile-first layout that works on all devices
 - **Dark Theme**: Beautiful dark mode with carefully crafted color palette

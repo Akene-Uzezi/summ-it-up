@@ -29,7 +29,7 @@ export default function Home() {
       setError("Input cannot be empty.");
       return;
     }
-    const isValidurl = (url: string): Boolean => {
+    const isValidurl = (url: string): boolean => {
       try {
         const parsed = new URL(url);
         if (parsed.protocol === "http:" || parsed.protocol === "https:") {

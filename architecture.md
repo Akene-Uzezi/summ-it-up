@@ -2,7 +2,7 @@
 
 ## Overview
 
-Summ-It-Up is a client-side web application that integrates with a backend summarization service to provide text summarization capabilities. The architecture prioritizes simplicity, responsiveness, and a modern user experience.
+Summ-It-Up is a client-side web application that integrates with a backend summarization service to provide text summarization capabilities. The application also includes speech recognition for converting spoken words to text. The architecture prioritizes simplicity, responsiveness, and a modern user experience.
 
 ## High-Level Architecture
 
@@ -66,8 +66,26 @@ Home (Page Component)
 ├── Summary Card (conditional)
 └── Input Form Card
     ├── Textarea (auto-resizing)
+    ├── Speech Recognition Button
     └── Submit Button
 ```
+
+#### Speech Recognition Integration
+
+The application includes speech recognition capabilities using the Web Speech API:
+
+- **Activation**: Clicking the microphone button activates speech recognition
+- **Language**: Configured for US English (`en-US`)
+- **Interim Results**: Disabled (only final transcripts are processed)
+- **State Management**: 
+  - `recording` state tracks recognition status
+  - Visual feedback with microphone/audio line icons
+  - Pulse animation during recording
+- **Text Integration**: Transcribed text is appended to the current input value
+- **Error Handling**: 
+  - Browser compatibility checks
+  - Error state for unsupported browsers
+  - Speech error events caught and displayed
 
 ### 2. Component Layer
 
