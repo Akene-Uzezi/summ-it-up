@@ -7,6 +7,10 @@ declare global {
     error: string;
     message: string;
   }
+
+  interface SpeechRecognitionEvent extends Event {
+    results: SpeechRecognitionResultList;
+  }
 }
 
 export {};
