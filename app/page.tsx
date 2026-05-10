@@ -9,6 +9,7 @@ import {
   ExternalLink,
   Mic,
   AudioLines,
+  Speech,
 } from "lucide-react";
 import { useState } from "react";
 import { motion } from "motion/react";
@@ -130,6 +131,11 @@ export default function Home() {
       )}
       {summary && !loading && (
         <Card className="w-full max-w-2xl border-border bg-card shadow-2xl overflow-hidden mb-4">
+          <div className="flex justify-end p-4">
+            <button className="text-white cursor-pointer p-2 rounded-md bg-transparent hover:bg-zinc-900 transition-colors">
+              <Speech />
+            </button>
+          </div>
           <CardContent className="p-4">
             <h2 className="text-lg font-semibold text-white mb-2">Summary</h2>
             <p className="text-zinc-400 whitespace-pre-wrap">{summary}</p>
