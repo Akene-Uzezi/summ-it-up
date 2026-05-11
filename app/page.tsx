@@ -195,7 +195,7 @@ export default function Home() {
           <Card className="border-border bg-card shadow-2xl overflow-hidden">
             <CardContent className="p-4 flex flex-col gap-3">
               <Textarea
-                placeholder="Paste your link..."
+                placeholder="Paste a URL or type your text..."
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 name="input"
