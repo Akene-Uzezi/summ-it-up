@@ -14,11 +14,12 @@ import {
 import { useState } from "react";
 import { motion } from "motion/react";
 import { Skeleton } from "@/components/ui/skeleton";
+import ReactMarkdown from "react-markdown";
 
 export default function Home() {
   const [inputValue, setInputValue] = useState("");
   const [loading, setLoading] = useState<boolean>(false);
-  const [summary, setSummary] = useState(null);
+  const [summary, setSummary] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState<boolean>(false);
   const [url, setUrl] = useState<string | null>(null);
@@ -138,7 +139,9 @@ export default function Home() {
           </div>
           <CardContent className="p-4">
             <h2 className="text-lg font-semibold text-white mb-2">Summary</h2>
-            <p className="text-zinc-400 whitespace-pre-wrap">{summary}</p>
+            <div className="text-zinc-400 whitespace-pre-wrap">
+              <ReactMarkdown>{summary}</ReactMarkdown>
+            </div>
           </CardContent>
           <div className="flex justify-end p-4">
             <button
