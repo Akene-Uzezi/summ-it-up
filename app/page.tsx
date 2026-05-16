@@ -25,6 +25,23 @@ export default function Home() {
   const [url, setUrl] = useState<string | null>(null);
   const [recording, setRecording] = useState<boolean>(false);
 
+  const handleSpeak = (): void => {
+    if (typeof window === "undefined" || !window.speechSynthesis) {
+      setError("Text to speech is not supported in this Browser");
+      return;
+    }
+    window.speechSynthesis.cancel();
+    if (summary === null) throw Error("No text to be uttered as speech");
+    const utterance: SpeechSynthesisUtterance = new SpeechSynthesisUtterance(
+      summary,
+    );
+    utterance.rate = 1.0;
+    utterance.pitch = 1.0;
+    utterance.volume = 1.0;
+
+    window.speechSynthesis.speak(utterance);
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (inputValue.trim() === "") {
@@ -133,7 +150,10 @@ export default function Home() {
       {summary && !loading && (
         <Card className="w-full max-w-2xl border-border bg-card shadow-2xl overflow-hidden mb-4">
           <div className="flex justify-end p-4">
-            <button className="text-white cursor-pointer p-2 rounded-md bg-transparent hover:bg-zinc-900 transition-colors">
+            <button
+              onClick={handleSpeak}
+              className="text-white cursor-pointer p-2 rounded-md bg-transparent hover:bg-zinc-900 transition-colors"
+            >
               <Speech />
             </button>
           </div>
